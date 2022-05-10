@@ -1,0 +1,11 @@
+	Dim fso As Scripting.FileSystemObject
+	Set fso = New Scripting.FileSystemObject
+	If fso.fileExists(ActiveWorkbook.Path & "\.building") = True Then
+		ActiveWorkbook.Save
+		Set gitCompiler_conf = gitCompiler_getConf
+		fso.CopyFile ActiveWorkbook.Path & "\build.xlsm", ActiveWorkbook.Path & "\" & gitCompiler_conf("projectName") & ".xlsm", True
+		gitCompiler_conf("projectVersion") = CDbl(gitCompiler_conf("projectVersion")) + 1
+		gitCompiler_setConf gitCompiler_conf
+		fso.DeleteFile ActiveWorkbook.Path & "\.building", True
+		delBuilder
+	End If
